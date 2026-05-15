@@ -107,13 +107,14 @@
       border-radius: 28px;
       box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      overflow: hidden;
+      overflow: visible;
       backdrop-filter: blur(12px);
     }
 
     header {
       position: relative;
       padding: 34px 34px 30px;
+      border-radius: 28px 28px 0 0;
       background: var(--header-bg);
       color: white;
     }
@@ -165,23 +166,85 @@
       right: 0;
       top: 0;
       flex: 0 0 auto;
-      width: 132px;
-      min-height: 42px;
+      width: 92px;
+      height: 44px;
       border: 1px solid rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.16);
       color: white;
       border-radius: 999px;
-      padding: 10px 13px;
-      font-weight: 800;
-      text-align: center;
-      white-space: nowrap;
+      padding: 4px;
       cursor: pointer;
-      transition: 0.2s ease;
+      overflow: hidden;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .theme-toggle::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.26);
+      transition: transform 0.24s ease;
+      z-index: 0;
+    }
+
+    body.dark .theme-toggle::before {
+      transform: translateX(48px);
+    }
+
+    .theme-icon {
+      position: absolute;
+      top: 4px;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.78);
+      transition: color 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+
+    .theme-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2.25;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .theme-icon.sun {
+      left: 4px;
+    }
+
+    .theme-icon.moon {
+      right: 4px;
+    }
+
+    body:not(.dark) .theme-icon.sun,
+    body.dark .theme-icon.moon {
+      color: #0f172a;
+      transform: scale(1.05);
     }
 
     .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.24);
       transform: translateY(-1px);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.72);
+      outline-offset: 3px;
     }
 
     .content {
@@ -206,8 +269,22 @@
       box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
     }
 
+    .question.incomplete {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22);
+    }
+
+    .question.incomplete:hover {
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22), 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
     body.dark .question:hover {
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    body.dark .question.incomplete,
+    body.dark .question.incomplete:hover {
+      box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.3), 0 12px 28px rgba(0, 0, 0, 0.22);
     }
 
     .question p {
@@ -215,6 +292,106 @@
       font-size: 1.02rem;
       margin: 0 0 16px;
       line-height: 1.45;
+    }
+
+    .geo-help {
+      position: relative;
+      display: inline-block;
+      color: var(--primary-dark);
+      text-decoration-line: underline;
+      text-decoration-style: dashed;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 4px;
+      cursor: help;
+      outline: none;
+    }
+
+    body.dark .geo-help {
+      color: #bfdbfe;
+    }
+
+    .geo-help:focus-visible {
+      border-radius: 4px;
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .geo-tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 10px);
+      z-index: 20;
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-solid);
+      color: var(--text);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
+      font-size: 0.86rem;
+      font-weight: 650;
+      line-height: 1.35;
+      text-align: left;
+      white-space: normal;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 6px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    body.dark .geo-tooltip {
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.38);
+    }
+
+    .geo-tooltip::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 10px;
+      height: 10px;
+      background: var(--card-solid);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transform: translate(-50%, -5px) rotate(45deg);
+    }
+
+    .geo-help:hover .geo-tooltip,
+    .geo-help:focus .geo-tooltip {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .geo-help.align-left .geo-tooltip {
+      left: 0;
+      transform: translate(0, 6px);
+    }
+
+    .geo-help.align-left .geo-tooltip::after {
+      left: 24px;
+    }
+
+    .geo-help.align-left:hover .geo-tooltip,
+    .geo-help.align-left:focus .geo-tooltip {
+      transform: translate(0, 0);
+    }
+
+    .geo-help.align-right .geo-tooltip {
+      right: 0;
+      left: auto;
+      transform: translate(0, 6px);
+    }
+
+    .geo-help.align-right .geo-tooltip::after {
+      right: 24px;
+      left: auto;
+      transform: translate(0, -5px) rotate(45deg);
+    }
+
+    .geo-help.align-right:hover .geo-tooltip,
+    .geo-help.align-right:focus .geo-tooltip {
+      transform: translate(0, 0);
     }
 
     .choices {
@@ -267,6 +444,7 @@
       gap: 12px;
       flex-wrap: wrap;
       margin-top: 26px;
+      width: 100%;
     }
 
     button {
@@ -280,6 +458,7 @@
     }
 
     .btn-primary {
+      flex: 1 1 auto;
       background: var(--primary-dark);
       color: white;
       box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
@@ -291,6 +470,7 @@
     }
 
     .btn-secondary {
+      flex: 0 0 auto;
       background: var(--primary-soft);
       color: var(--primary-dark);
       border: 1px solid var(--border);
@@ -354,9 +534,27 @@
       }
 
       .theme-toggle {
-        position: static;
+        position: relative;
         align-self: center;
         margin-top: 12px;
+      }
+
+      .geo-tooltip {
+        right: auto;
+        left: 0;
+        max-width: min(280px, calc(100vw - 36px));
+        transform: translate(0, 6px);
+      }
+
+      .geo-tooltip::after {
+        right: auto;
+        left: 24px;
+        transform: translate(-50%, -5px) rotate(45deg);
+      }
+
+      .geo-help:hover .geo-tooltip,
+      .geo-help:focus .geo-tooltip {
+        transform: translate(0, 0);
       }
 
       .choices {
@@ -365,13 +563,13 @@
       }
 
       .choice label,
-      .actions button {
+      .btn-primary {
         width: 100%;
       }
 
       .actions {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) auto;
       }
     }
   </style>
@@ -386,8 +584,25 @@
           <p class="subtitle">Questionnaire à compléter auprès du requérant lors d'un appel pour "Malade" ou "Malaise", à la création du DRM et avec une antériorité de 6 semaines</p>
         </div>
 
-        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Changer le thème">
-          Mode sombre
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Activer le mode sombre" aria-pressed="false" title="Changer le thème">
+          <span class="theme-icon sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </span>
+          <span class="theme-icon moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </span>
         </button>
       </div>
     </header>
@@ -395,7 +610,13 @@
     <div class="content">
       <div class="question-list">
         <div class="question">
-          <p id="question1">1) Retour d'un voyage en zone à risque (notamment d'Amérique du Sud, Guyane, Europe du Nord &amp; Centrale ou Balkans) ?</p>
+          <p id="question1">
+            1) Retour d'un voyage en zone à risque (notamment d'<span class="geo-help align-left" tabindex="0">Amérique du Sud<span class="geo-tooltip" role="tooltip">Argentine, Bolivie, Brésil, Chili, Colombie, Équateur, Guyana, Paraguay, Pérou, Suriname, Uruguay, Venezuela.</span></span>,
+            <span class="geo-help" tabindex="0">Guyane<span class="geo-tooltip" role="tooltip">Guyane française.</span></span>,
+            <span class="geo-help" tabindex="0">Europe du Nord<span class="geo-tooltip" role="tooltip">Danemark, Estonie, Finlande, Islande, Irlande, Lettonie, Lituanie, Norvège, Royaume-Uni, Suède.</span></span> &amp;
+            <span class="geo-help" tabindex="0">Centrale<span class="geo-tooltip" role="tooltip">Allemagne, Autriche, Hongrie, Liechtenstein, Pologne, République tchèque, Slovaquie, Slovénie, Suisse.</span></span> ou
+            <span class="geo-help align-right" tabindex="0">Balkans<span class="geo-tooltip" role="tooltip">Albanie, Bosnie-Herzégovine, Bulgarie, Croatie, Grèce, Kosovo, Monténégro, Macédoine du Nord, Roumanie, Serbie, Slovénie.</span></span>) ?
+          </p>
           <div class="choices">
             <div class="choice">
               <input type="radio" id="q1-oui" name="q1" value="Oui">
@@ -495,16 +716,45 @@
       element.className = "message";
     }
 
+    function getQuestionElement(numero) {
+      var titreQuestion = document.getElementById("question" + numero);
+      return titreQuestion ? titreQuestion.closest(".question") : null;
+    }
+
+    function marquerQuestionIncomplete(numero, estIncomplete) {
+      var question = getQuestionElement(numero);
+
+      if (!question) {
+        return;
+      }
+
+      question.classList.toggle("incomplete", estIncomplete);
+    }
+
+    function effacerErreurQuestion(numero) {
+      if (getReponse(numero) !== "") {
+        marquerQuestionIncomplete(numero, false);
+        masquerMessage("copyStatus");
+      }
+    }
+
     function copierPourDRM() {
       var texte = "Questionnaire Hantavirus\n\n";
       var auMoinsUnOui = false;
+      var premiereQuestionIncomplete = null;
 
       for (var i = 1; i <= 4; i++) {
         var reponse = getReponse(i);
+        var questionIncomplete = reponse === "";
 
-        if (reponse === "") {
-          afficherMessage("copyStatus", "Merci de répondre à toutes les questions avant de copier.", "danger");
-          return;
+        marquerQuestionIncomplete(i, questionIncomplete);
+
+        if (questionIncomplete) {
+          if (premiereQuestionIncomplete === null) {
+            premiereQuestionIncomplete = i;
+          }
+
+          continue;
         }
 
         if (reponse === "Oui") {
@@ -512,6 +762,18 @@
         }
 
         texte += i + ") " + questionsDRM[i - 1] + " : " + reponse + "\n";
+      }
+
+      if (premiereQuestionIncomplete !== null) {
+        masquerMessage("copyStatus");
+
+        var question = getQuestionElement(premiereQuestionIncomplete);
+
+        if (question) {
+          question.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        return;
       }
 
       if (auMoinsUnOui) {
@@ -543,6 +805,7 @@
     function reinitialiser() {
       for (var i = 1; i <= 4; i++) {
         var reponses = document.getElementsByName("q" + i);
+        marquerQuestionIncomplete(i, false);
 
         for (var j = 0; j < reponses.length; j++) {
           reponses[j].checked = false;
@@ -555,14 +818,20 @@
     }
 
     function appliquerTheme(theme) {
+      var boutonTheme = document.getElementById("themeToggle");
+
       if (theme === "dark") {
         document.body.classList.add("dark");
         document.body.classList.remove("light");
-        document.getElementById("themeToggle").textContent = "Mode clair";
+        boutonTheme.setAttribute("aria-label", "Activer le mode clair");
+        boutonTheme.setAttribute("aria-pressed", "true");
+        boutonTheme.title = "Mode sombre actif";
       } else {
         document.body.classList.add("light");
         document.body.classList.remove("dark");
-        document.getElementById("themeToggle").textContent = "Mode sombre";
+        boutonTheme.setAttribute("aria-label", "Activer le mode sombre");
+        boutonTheme.setAttribute("aria-pressed", "false");
+        boutonTheme.title = "Mode clair actif";
       }
     }
 
@@ -574,13 +843,7 @@
         return;
       }
 
-      var prefereSombre = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-      if (prefereSombre) {
-        appliquerTheme("dark");
-      } else {
-        appliquerTheme("light");
-      }
+      appliquerTheme("dark");
     }
 
     function changerTheme() {
@@ -593,6 +856,18 @@
     document.getElementById("btnCopier").onclick = copierPourDRM;
     document.getElementById("btnReset").onclick = reinitialiser;
     document.getElementById("themeToggle").onclick = changerTheme;
+
+    for (var i = 1; i <= 4; i++) {
+      var reponses = document.getElementsByName("q" + i);
+
+      for (var j = 0; j < reponses.length; j++) {
+        reponses[j].onchange = (function(numeroQuestion) {
+          return function() {
+            effacerErreurQuestion(numeroQuestion);
+          };
+        })(i);
+      }
+    }
 
     initialiserTheme();
   </script>
