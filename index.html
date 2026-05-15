@@ -287,11 +287,42 @@
       box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.3), 0 12px 28px rgba(0, 0, 0, 0.22);
     }
 
-    .question p {
+    .question-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
       font-weight: 750;
       font-size: 1.02rem;
       margin: 0 0 16px;
       line-height: 1.45;
+    }
+
+    .question-number {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+      font-size: 0.95rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    body.dark .question-number {
+      color: #bfdbfe;
+      border-color: rgba(96, 165, 250, 0.28);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .question-text {
+      min-width: 0;
+      flex: 1 1 auto;
     }
 
     .geo-help {
@@ -509,13 +540,64 @@
       color: var(--success);
     }
 
+    .message.amu {
+      display: block;
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+    }
+
+    .message-title {
+      display: block;
+      font-size: 1.12rem;
+      font-weight: 900;
+    }
+
+    .message-detail {
+      display: block;
+      margin-top: 6px;
+      color: var(--text);
+      font-size: 0.96rem;
+      font-weight: 750;
+    }
+
+    body.dark .message-detail {
+      color: #e5e7eb;
+    }
+
     #copyText {
       width: 1px;
       height: 1px;
       opacity: 0;
-      position: absolute;
-      left: -9999px;
-      top: -9999px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+    }
+
+    .footer-meta {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .footer-meta a {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer-meta a:hover {
+      text-decoration: underline;
+    }
+
+    body.dark .footer-meta a {
+      color: #bfdbfe;
     }
 
     @media (max-width: 700px) {
@@ -610,12 +692,13 @@
     <div class="content">
       <div class="question-list">
         <div class="question">
-          <p id="question1">
-            1) Retour d'un voyage en zone à risque (notamment d'<span class="geo-help align-left" tabindex="0">Amérique du Sud<span class="geo-tooltip" role="tooltip">Argentine, Bolivie, Brésil, Chili, Colombie, Équateur, Guyana, Paraguay, Pérou, Suriname, Uruguay, Venezuela.</span></span>,
-            <span class="geo-help" tabindex="0">Guyane<span class="geo-tooltip" role="tooltip">Guyane française.</span></span>,
-            <span class="geo-help" tabindex="0">Europe du Nord<span class="geo-tooltip" role="tooltip">Danemark, Estonie, Finlande, Islande, Irlande, Lettonie, Lituanie, Norvège, Royaume-Uni, Suède.</span></span> &amp;
-            <span class="geo-help" tabindex="0">Centrale<span class="geo-tooltip" role="tooltip">Allemagne, Autriche, Hongrie, Liechtenstein, Pologne, République tchèque, Slovaquie, Slovénie, Suisse.</span></span> ou
-            <span class="geo-help align-right" tabindex="0">Balkans<span class="geo-tooltip" role="tooltip">Albanie, Bosnie-Herzégovine, Bulgarie, Croatie, Grèce, Kosovo, Monténégro, Macédoine du Nord, Roumanie, Serbie, Slovénie.</span></span>) ?
+          <p id="question1" class="question-title">
+            <span class="question-number">1</span>
+            <span class="question-text">Retour d'un voyage en zone à risque (notamment d'<span class="geo-help align-left" tabindex="0">Amérique du Sud<span class="geo-tooltip" role="tooltip">Argentine, Bolivie, Brésil, Chili, Colombie, Équateur, Guyana, Paraguay, Pérou, Suriname, Uruguay, Venezuela.</span></span>,
+              <span class="geo-help" tabindex="0">Guyane<span class="geo-tooltip" role="tooltip">Guyane française.</span></span>,
+              <span class="geo-help" tabindex="0">Europe du Nord<span class="geo-tooltip" role="tooltip">Danemark, Estonie, Finlande, Islande, Irlande, Lettonie, Lituanie, Norvège, Royaume-Uni, Suède.</span></span> &amp;
+              <span class="geo-help" tabindex="0">Centrale<span class="geo-tooltip" role="tooltip">Allemagne, Autriche, Hongrie, Liechtenstein, Pologne, République tchèque, Slovaquie, Slovénie, Suisse.</span></span> ou
+              <span class="geo-help align-right" tabindex="0">Balkans<span class="geo-tooltip" role="tooltip">Albanie, Bosnie-Herzégovine, Bulgarie, Croatie, Grèce, Kosovo, Monténégro, Macédoine du Nord, Roumanie, Serbie, Slovénie.</span></span>) ?</span>
           </p>
           <div class="choices">
             <div class="choice">
@@ -630,7 +713,10 @@
         </div>
 
         <div class="question">
-          <p id="question2">2) Participation à une croisière, voyage collectif ou séjour en espace confiné, avec des personnes malades ?</p>
+          <p id="question2" class="question-title">
+            <span class="question-number">2</span>
+            <span class="question-text">Participation à une croisière, voyage collectif ou séjour en espace confiné, avec des personnes malades ?</span>
+          </p>
           <div class="choices">
             <div class="choice">
               <input type="radio" id="q2-oui" name="q2" value="Oui">
@@ -644,7 +730,10 @@
         </div>
 
         <div class="question">
-          <p id="question3">3) Contact proche ou prolongé avec une personne malade revenant d'une zone à risque ?</p>
+          <p id="question3" class="question-title">
+            <span class="question-number">3</span>
+            <span class="question-text">Contact proche ou prolongé avec une personne malade revenant d'une zone à risque ?</span>
+          </p>
           <div class="choices">
             <div class="choice">
               <input type="radio" id="q3-oui" name="q3" value="Oui">
@@ -658,7 +747,10 @@
         </div>
 
         <div class="question">
-          <p id="question4">4) Contact avec des rats, souris, campagnols, mulots ou autres rongeurs de manière directe (morsure) ou indirecte (déjection, urine, ...) ?</p>
+          <p id="question4" class="question-title">
+            <span class="question-number">4</span>
+            <span class="question-text">Contact avec des rats, souris, campagnols, mulots ou autres rongeurs de manière directe (morsure) ou indirecte (déjection, urine, ...) ?</span>
+          </p>
           <div class="choices">
             <div class="choice">
               <input type="radio" id="q4-oui" name="q4" value="Oui">
@@ -681,6 +773,11 @@
       <div id="copyStatus" class="message"></div>
 
       <textarea id="copyText"></textarea>
+
+      <footer id="projectInfo" class="footer-meta">
+        Version du projet : 1.1<br>
+        Contact : <a href="mailto:hugo.dagnas@chu-bordeaux.fr">hugo.dagnas@chu-bordeaux.fr</a>
+      </footer>
     </div>
   </main>
 
@@ -710,9 +807,15 @@
       element.className = "message " + type;
     }
 
+    function afficherMessageHtml(elementId, contenuHtml, type) {
+      var element = document.getElementById(elementId);
+      element.innerHTML = contenuHtml;
+      element.className = "message " + type;
+    }
+
     function masquerMessage(elementId) {
       var element = document.getElementById(elementId);
-      element.textContent = "";
+      element.innerHTML = "";
       element.className = "message";
     }
 
@@ -777,7 +880,11 @@
       }
 
       if (auMoinsUnOui) {
-        afficherMessage("message", "Orientation AMU obligatoire", "danger");
+        afficherMessageHtml(
+          "message",
+          '<span class="message-title">Orientation AMU obligatoire</span><span class="message-detail">Renseigner l\'indicateur statistique : Maladie émergente</span>',
+          "amu"
+        );
       } else {
         masquerMessage("message");
       }
@@ -796,10 +903,12 @@
       }
 
       if (copieOk) {
-        afficherMessage("copyStatus", "Questionnaire copié dans le DRM.", "success");
+        afficherMessage("copyStatus", "Questionnaire copié, faites CTRL + V dans votre DRM", "success");
       } else {
         afficherMessage("copyStatus", "Copie automatique impossible. Le texte est sélectionné, utilisez Ctrl+C.", "danger");
       }
+
+      document.getElementById("copyStatus").scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function reinitialiser() {
